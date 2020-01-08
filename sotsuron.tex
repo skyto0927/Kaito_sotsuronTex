@@ -1,0 +1,132 @@
+\documentclass[10ptj,a4j,dvipdfmx,uplatex]{jsbook}
+
+% レイアウト
+\usepackage[driver=dvipdfm,hmargin=19.05truemm,vmargin=25.40truemm]{geometry}
+
+% エンコーディング
+\usepackage[T1]{fontenc}
+
+% 日本語フォント
+\usepackage[expert,deluxe,uplatex]{otf}
+
+% 数式・科学表記
+\usepackage{amsmath,amssymb,bm,mleftright,diffcoeff}
+\usepackage{siunitx}
+
+% 画像処理
+\usepackage[dvipdfmx]{graphicx}
+
+% 参考文献スタイル指定
+\usepackage[nobreak]{cite}
+\usepackage[resetlabels]{multibib}
+\newcites{pubs}{発表文献}
+\bibliographystyle{junsrt} %jplain
+\bibliographystylepubs{junsrt}
+\nocitepubs{*}
+
+% 相互参照
+\usepackage[hidelinks]{hyperref}
+
+% URL
+\usepackage{url}
+
+% 画像用ディレクトリ
+\graphicspath{{images/}}
+
+%%
+%% タイトル・著者・日付
+%%
+\usepackage{dendentitle}
+\title{進捗報告}
+\author{B4 小林海斗}
+\date{2020/1/1}
+
+%%
+%% main
+%%
+\begin{document}
+\makedendentitle{卒論}{峯松・齋藤研究室}
+
+\chapter{序論}
+
+\begin{table}[h]
+\caption{おすすめの執筆順序}% {}内に表題を書く
+\begin{center}
+\begin{tabular}{|c|c|l|} %セル内の位置｛c:センタリング，l:左寄せ｝，パイプ「|」縦罫線
+\hline
+1 & 4章 & 開発の中身，実験方法となんとなく見えている(or 予想される)結果 \\
+\hline
+2 & 3章 & 理論と仮説，この段階ではだいたいでいい，上記実験のベースになっている素案ぐらいでも． \\
+\hline
+3 & 5章 & 結果のグラフ，理解できるグラフを描きなおすために実験をやり直してもいい．チート厳禁． \\
+\hline
+4 & 2章＋3章 & 関連研究，課題設定→理論までの展開を整理しながら \\
+\hline
+5 & 1章＋6章 & できた結果について素直に受け止められるよう，風呂敷を広げすぎずに． \\
+\hline
+6 & 論文概要 & 章構成を再度見直し，推敲時にブレないように，ここで固める． \\
+\hline
+7 & 全章推敲 & このあたりでやっと先輩や先生に見せられるレベル，ただし卒業は見通しが出る． \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\chapter{関連研究}
+過去の先輩の論文を参考にします
+
+\chapter{理論的背景}
+\section{発声について}
+生理的な説明もしてよさそう→開口面積や喉頭を録画する根拠
+
+\section{歌詞生成について}
+
+\chapter{音高や音程、母音における発声難度の調査}
+予備実験と本実験のことを書く
+
+\section{予備実験}
+\subsection{概要}
+\subsection{実験手法}
+母音ごとに音高を変えて収録した。
+フォルマント周波数の平均値をとり、また発声しやすさを主観評価で測定した。
+フリーソフトウェア「Praat」を使用。
+音高は平均律におけるF3（174.6Hz）からA4（440.0Hz)の10音を使用。
+F1、F2、F3それぞれの平均値を測定。
+測定者は20代男性1名であり、ある程度歌唱経験がある。
+発声しにくさは「発声しにくい」、「やや発声しにくい」、「やや発声しやすい」、「発声しやすい」の4段階で評価する。
+最も出しやすい音高で「あ」を発声した時を「発声しやすい」と定義した。
+\subsection{実験結果}
+
+\section{本実験}
+\subsection{概要}
+\subsection{実験手法}
+以下に実験の手法を示す。
+実験は歌唱に普段から親しんでいる男性2人、そうでない男性2人の計4人を対象として行った。
+収録する音声はすべて日本語の母音「あ」「い」「う」「え」「お」を用いて行う。
+音声は単音発声と2音間の上昇、下降について収録する。
+音高については男性の地声の範囲内に収まるよう、F3、A3,C4,F4の4音を採用した。
+録音の際ガイドとなる音声が必要なため、短いガイド音声を作成して利用した。
+できるだけ正しい音程で収録できるよう、使用する音源を録音前に何度か聞いてもらい、音程が取れたところで収録に移った。
+
+同時に、発声の様子を正面から録画し、口の開口面積および顎、喉頭の下降度合いを計測する。
+
+単音は音声1を用いて、F3,A3,C4,F4を続けて発声する。母音を変えて5回収録する。
+上昇は音声2を用いて、F3→A3,F3→C4,F3→F4を続けて発声する。上昇前後ともに母音を変えて25回収録する。
+下降は音声3を用いて、A3→F3,C4→F3,F4→F3を続けて発声する。下降前後ともに母音を変えて25回収録する。
+以上の工程を2回繰り返す。
+
+\subsection{実験結果}
+
+
+\chapter{自動歌詞生成}
+上記を踏まえ、プログラムをまわした結果をかく
+
+\chapter{結論}
+
+\chapter{謝辞}
+
+
+
+\bibliography{references}
+
+\end{document}
