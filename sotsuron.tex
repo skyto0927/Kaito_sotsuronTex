@@ -1,4 +1,4 @@
-\documentclass[10ptj,a4j,dvipdfmx,uplatex, draft]{jsbook}%ここのdraft消すと画像が出る
+\documentclass[10ptj,a4j,dvipdfmx,uplatex, oneside, openany]{jsbook}%ここのdraft消すと画像が出る
 
 % レイアウト
 \usepackage[driver=dvipdfm,hmargin=19.05truemm,vmargin=25.40truemm]{geometry}
@@ -331,11 +331,40 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
 %---------------------------%
 
 \chapter{理論的背景}
-\section{発声について}
+\section{母音とフォルマント周波数}
+フォルマント周波数は母音や声質の決定において非常に重要である。
+フォルマント周波数は声道スペクトルのピークとなる共鳴周波数のことであり、
+低い方から順に第1フォルマント（$F_1$）、第2フォルマント（$F_2$)、と名付けられる。
+
+調音器官の運動は、フォルマント周波数全てに影響を与える。
+第1フォルマントは顎の開きに敏感で、開き具合が大きくなるほど第1フォルマント周波数は上昇する。
+第2フォルマントは特に舌の形状に大きく影響を受ける。
+声道前方を狭めるときに第2フォルマント周波数はもっとも高くなる。
+逆に、軟口蓋や咽頭部を狭める時には低くなる。
+第3フォルマントは舌尖の位置、正確には前歯のすぐ後ろの空間に影響を受ける。
+空間が大きいほど第3フォルマント周波数は低くなる。
+
+フォルマント周波数のうち特に$F_1$、$F_2$は母音を特徴付ける重要なパラメータであり、これらの分布によって母音を分類することができる\cite{japanese_vowels}。
+図\ref{fig:jp_formant}は日本語5母音における$F_1$、$F_2$を示したものである。
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=7.0cm]{5母音.png}
+      \caption{日本語5母音の$F_1$、$F_2$\cite{japanese_vowels}}
+      \label{fig:jp_formant}
+    \end{center}
+\end{figure}
+ここでAMは成人男性、AFは成人女性、ADは青年、Cは子供である。一般に、平均的な声が高いほど
+フォルマント周波数も高い傾向にある。
+成人男性を例に挙げると、$F_1$は250〜1000 \si{Hz}、$F_2$は600〜2500 \si{Hz}、
+$F_3$は1700〜3500 \si{Hz}である\cite{science}。
+
+\section{フォルマント周波数}
 生理的な説明もしてよさそう→開口面積や喉頭を録画する根拠
 
-\section{ピッチ取得について}
-ピッチの取得方法には複数の手法があるが、ここでは音声分析合成システムであるWORLD\cite{world}を用いて行った。
+\section{ピッチ取得}
+ピッチの取得方法には複数の手法があるが、今回は音声分析合成システムであるWORLD\cite{world}を用いて行う。
+
 
 %---------------------------%
 
@@ -391,14 +420,69 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
 \subsection{実験結果}
 ここに実験結果のグラフ。（時間-F0 or centグラフ）
 
+\begin{comment}
+\begin{figure}[htbp]
+    \begin{minipage}{0.2\hsize}
+        \begin{center}
+            \includegraphics[width=30mm]{up_F0/1_a.png}
+        \end{center}
+        \caption{一つめの図}
+        \label{fig:one}
+    \end{minipage}
+    \begin{minipage}{0.2\hsize}
+        \begin{center}
+            \includegraphics[width=30mm]{up_F0/1_i.png}
+        \end{center}
+        \caption{二つめの図}
+        \label{fig:two}
+    \end{minipage}
+    \begin{minipage}{0.2\hsize}
+        \begin{center}
+            \includegraphics[width=30mm]{up_F0/1_u.png}
+        \end{center}
+        \caption{三つめの図}
+        \label{fig:three}
+    \end{minipage}
+    \begin{minipage}{0.2\hsize}
+        \begin{center}
+            \includegraphics[width=30mm]{up_F0/1_e.png}
+        \end{center}
+        \caption{4つめの図}
+        \label{fig:four}
+    \end{minipage}
+    \begin{minipage}{0.2\hsize}
+        \begin{center}
+            \includegraphics[width=30mm]{up_F0/1_o.png}
+        \end{center}
+        \caption{5つめの図}
+        \label{fig:five}
+    \end{minipage}
+\end{figure}
+\end{comment}
 
-単音…
-立ち上がりで音程が安定しない
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=7.0cm]{up_F0/1_a.png}
+      \caption{一人目、/a/}
+      \label{fig:1_a}
+    \end{center}
+\end{figure}
 
-上昇下降…
-音の切り替え時に安定しない
+単音
+F0平均、分散
+F0平均の時間変化
+発声しにくさとF0平均
+
+上下
+F0の時間変化
+フォルマントの移動
+
 
 被験者ごとの比較
+1…全体的に低めだが揺らぎは小さい
+2…音程を合わせに行こうとして揺らぐ
+3…精度が良いが、高音ほどピッチが上がる
+4…音によってばらつきあり
 
 \section{得られた結果と発声難度の関連性をがんばって見つけたいパートです}
 \subsection{概要}
@@ -410,7 +494,7 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
 
 %---------------------------%
 
-\chapter{自動歌詞生成}
+\chapter{分析結果}
 上記を踏まえ、プログラムをまわした結果をかく
 
 %---------------------------%
