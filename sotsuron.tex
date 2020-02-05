@@ -326,7 +326,32 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
 
 
 \chapter{関連研究}
-過去の先輩の論文を参考にします
+
+\section{歌声特有の$F_0$動的変動成分}
+齋藤らは様々な歌声データの$F_0$変化パターンを分析し、以下に示す4種類の$F_0$動的変動成分が歌唱スタイルや歌唱者に関係なく
+存在することを明らかにした。\cite{singbyspeaking}
+\begin{description}
+    \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分
+    \item[ヴィブラート(Vibrato)]同一音高区間で観測される4~8Hzの準周期的な変動成分
+    \item[プレパレーション(Preparationn)]音高の変化直前に変化とは逆方向に触れる瞬時的な変動成分
+    \item[微細振動(Fine fluctuation)] 発声区間全体に観測される15~20Hz程度の不規則で細かい変動成分
+\end{description}
+
+図\ref{f0_moving}はアマチュア歌手による日本童謡「七つの子」の$F_0$変化パターンおよび$F_0$動的変動成分である。
+これから上記の微細振動を除く変動成分が生じていることが読み取れる。
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{f0_moving.png}
+      \caption{アマチュア歌唱者の歌声における$F0$動的変動成分の例\cite{singbyspeaking}}
+      \label{f0_moving}
+    \end{center}
+\end{figure}
+
+このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
+
+
+\section{}
 
 %---------------------------%
 
@@ -351,7 +376,7 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
     \begin{center}
       \includegraphics[clip,width=7.0cm]{5母音.png}
       \caption{日本語5母音の$F_1$、$F_2$\cite{japanese_vowels}}
-      \label{fig:jp_formant}
+      \label{jp_formant}
     \end{center}
 \end{figure}
 ここでAMは成人男性、AFは成人女性、ADは青年、Cは子供である。一般に、平均的な声が高いほど
@@ -359,20 +384,56 @@ MFCC(メル周波数ケプストラム係数)は人間の聴覚の特性に基�
 成人男性を例に挙げると、$F_1$は250〜1000 \si{Hz}、$F_2$は600〜2500 \si{Hz}、
 $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
-\section{フォルマント周波数}
+\section{歌声の特徴について}
 生理的な説明もしてよさそう→開口面積や喉頭を録画する根拠
 
+
+\section{男声の声区}
+男声は、低い周波数で用いる地声の声区と女声の特徴を模倣する裏声の声区に区別される。\cite{science}
+この声区の変化時には声区転換が生じ、声質が大きく変わる。
+男性の地声と裏声の声区の重複する区間は200~350Hz（G3~F4）であるが、この声区の幅、境界は個人により大きく異なる。
+
+\section{母音の配置}
+図\ref{vowels}はIPAが定めた母音チャートである。
+縦軸は口の開き具合に対応し、上に行くほど狭くなる。
+横軸は舌の前後位置に対応し、左に行くほど前寄りである。
+
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=7.0cm]{vowels.png}
+      \caption{IPA母音チャート\cite{vowels}}
+      \label{vowels}
+    \end{center}
+\end{figure}
+
+\section{音高表記}
+セントは音程を表す対数単位であり、12平均律においてオクターブを1200等分したものが1セントである。
+すなわち100セントで1半音のずれを表す。
+
+2つの音$x$と$y$の周波数が分かれば、その間のセント値は以下のように求められる。
+\begin{equation}
+    cent = 1200 \log_2 \frac{y}{x} 
+\end{equation}
+
+
 \section{ピッチ取得}
-ピッチの取得方法には複数の手法があるが、今回は音声分析合成システムであるWORLD\cite{world}を用いて行う。
+ピッチの取得方法には複数の手法があるが、今回は音声分析合成システムであるWORLD\cite{world}におけるHarvestを用いて行った。
+ここではその概要について述べる。
+
 
 
 %---------------------------%
 
+
 \chapter{音高・音色における発声難度の調査}
 本章では、まず初めに予備実験として音声を収録し、発声難度を主観評価する。
 次に、そこで得られた結果からどの要素が発声しにくさとして現れているかを分析する。
-\section{予備実験}
-\subsection{実験条件}
+
+
+
+
+\section{実験条件}
 \begin{description}
     \item[被験者]\mbox{}\\
         実験は20代男性4人を対象として行った。
@@ -417,56 +478,53 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
         などなど
 \end{description}
 
-\subsection{実験結果}
-ここに実験結果のグラフ。（時間-F0 or centグラフ）
+\section{実験結果}
+以下に実験結果を示す。
 
-\begin{comment}
-\begin{figure}[htbp]
-    \begin{minipage}{0.2\hsize}
-        \begin{center}
-            \includegraphics[width=30mm]{up_F0/1_a.png}
-        \end{center}
-        \caption{一つめの図}
-        \label{fig:one}
-    \end{minipage}
-    \begin{minipage}{0.2\hsize}
-        \begin{center}
-            \includegraphics[width=30mm]{up_F0/1_i.png}
-        \end{center}
-        \caption{二つめの図}
-        \label{fig:two}
-    \end{minipage}
-    \begin{minipage}{0.2\hsize}
-        \begin{center}
-            \includegraphics[width=30mm]{up_F0/1_u.png}
-        \end{center}
-        \caption{三つめの図}
-        \label{fig:three}
-    \end{minipage}
-    \begin{minipage}{0.2\hsize}
-        \begin{center}
-            \includegraphics[width=30mm]{up_F0/1_e.png}
-        \end{center}
-        \caption{4つめの図}
-        \label{fig:four}
-    \end{minipage}
-    \begin{minipage}{0.2\hsize}
-        \begin{center}
-            \includegraphics[width=30mm]{up_F0/1_o.png}
-        \end{center}
-        \caption{5つめの図}
-        \label{fig:five}
-    \end{minipage}
-\end{figure}
-\end{comment}
+
+\subsection{実験1}
+
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=7.0cm]{up_F0/1_a.png}
-      \caption{一人目、/a/}
-      \label{fig:1_a}
+      \includegraphics[clip,width=16.0cm]{F0_long_1.png}
+      \caption{被験者1の単音発声}
+      \label{fig:1}
     \end{center}
 \end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_long_2.png}
+      \caption{被験者2の単音発声}
+      \label{fig:2}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_long_3.png}
+      \caption{被験者3の単音発声}
+      \label{fig:3}
+    \end{center}
+
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_long_4.png}
+      \caption{被験者4の単音発声}
+      \label{fig:4}
+    \end{center}
+\end{figure}
+
+
+
+\subsection{実験2}
+
+
+\subsection{実験3}
+
 
 単音
 F0平均、分散
@@ -484,18 +542,121 @@ F0の時間変化
 3…精度が良いが、高音ほどピッチが上がる
 4…音によってばらつきあり
 
-\section{得られた結果と発声難度の関連性をがんばって見つけたいパートです}
-\subsection{概要}
-\subsection{実験手法}
-\subsection{実験結果}
-
-目的と実験設計
 
 
 %---------------------------%
 
 \chapter{分析結果}
 上記を踏まえ、プログラムをまわした結果をかく
+
+\section{単音発声の安定性}
+単音発声は8秒間同じ音高を発声し続けるため、後半に音程の安定性が崩れることがあった。
+この安定性を具体的に見るために、時間軸をいくつかの区間に分けて分析を行った。
+歌い出し、歌い終わりの影響を避けるため、初めと終わりのそれぞれ1秒間を除いた6秒間を4つの区間に分け、
+それぞれの区間において平均と標準偏差を求めた。
+この結果を図\ref{long_mean_1}、\ref{long_mean_2}、\ref{long_mean_3}、\ref{long_mean_4}に示した。
+これらを見ると、音高が上がるほど最終的な音のぶれが小さくなっていることがわかる。
+このことから、音高を合わせ続けることは低音の方が難しいと考えられる。
+また、F3において/i/、/u/の音高の平均が他の母音に比べて全体的に高くなっている。
+これは/i/、/u/の母音が狭め母音であることに起因すると考えられる。
+
+しかし、高音であるほど持続しにくいという仮説の裏付けは得られなかった。
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_mean_1.png}
+      \caption{被験者1の平均値変化}
+      \label{long_mean_1}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_mean_2.png}
+      \caption{被験者2の平均値変化}
+      \label{long_mean_2}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_mean_3.png}
+      \caption{被験者3の平均値変化}
+      \label{long_mean_3}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_mean_4.png}
+      \caption{被験者4の平均値変化}
+      \label{long_mean_4}
+    \end{center}
+\end{figure}
+
+\section{$F_0$の周波数変調}
+前節の分析では高音の不安定性が見出せなかったため、$F_0$動的変動成分に着目する。
+詳細な条件は表\ref{table:F0Moduration}に示した。
+
+
+\begin{table}[h]
+    \caption{フーリエ変換詳細}
+    \label{table:F0Moduration}
+    \centering
+    \begin{tabular}{clll}
+        \hline
+        条件 & 詳細\\
+        \hline \hline
+        データ長 & 6001\\
+        フレームレート & 1000Hz\\
+        窓長 & 500\\
+        シフト長 & 50\\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+6秒間のデータに対してフーリエ変換を行い、モジュレーションの全体平均をとったものが
+図\ref{long_spectrogram_1}、\ref{long_spectrogram_2}、
+\ref{long_spectrogram_3}、\ref{long_spectrogram_4}である。
+
+被験者3、4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
+この原因の一つとして、/i/、/u/の$F_1$が発声している音高と近いことから、
+声帯音源の発声機構と声道の間に強い干渉が生じ、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる。\cite{source-filterCoupling}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_spectrogram_1.png}
+      \caption{被験者1のモジュレーションの全体平均}
+      \label{long_spectrogram_1}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_spectrogram_2.png}
+      \caption{被験者2のモジュレーションの全体平均}
+      \label{long_spectrogram_2}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_spectrogram_3.png}
+      \caption{被験者3のモジュレーションの全体平均}
+      \label{long_spectrogram_3}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{long_spectrogram_4.png}
+      \caption{被験者4のモジュレーションの全体平均}
+      \label{long_spectrogram_4}
+    \end{center}
+\end{figure}
+
+
 
 %---------------------------%
 
@@ -517,5 +678,74 @@ F0の時間変化
 \end{flushright}
 
 \bibliography{references}
+
+
+\appendix
+\chapter{載せきれなかったデータたちの墓場}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_1.png}
+      \caption{被験者1の上昇発声}
+      \label{fig:u1}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_2.png}
+      \caption{被験者2の上昇発声}
+      \label{fig:u2}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_3.png}
+      \caption{被験者3の上昇発声}
+      \label{fig:u3}
+    \end{center}
+
+\end{figure}\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_4.png}
+      \caption{被験者4の上昇発声}
+      \label{fig:u4}
+    \end{center}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_1.png}
+      \caption{被験者1の上昇発声}
+      \label{fig:u1}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_2.png}
+      \caption{被験者2の上昇発声}
+      \label{fig:u2}
+    \end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_3.png}
+      \caption{被験者3の上昇発声}
+      \label{fig:u3}
+    \end{center}
+
+\end{figure}\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=16.0cm]{F0_up_4.png}
+      \caption{被験者4の上昇発声}
+      \label{fig:u4}
+    \end{center}
+\end{figure}
+
 
 \end{document}
