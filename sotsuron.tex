@@ -1,4 +1,4 @@
-\documentclass[10.5ptj,a4j,dvipdfmx,uplatex, oneside, openany]{jsbook}%ここのdraft消すと画像が出る
+\documentclass[10.5ptj,a4j,dvipdfmx,uplatex, oneside, openany, report, draft]{jsbook}%ここのdraft消すと画像が出る
 
 % レイアウト
 \usepackage[driver=dvipdfm,hmargin=19.05truemm,vmargin=25.40truemm]{geometry}
@@ -40,15 +40,15 @@
 %% タイトル・著者・日付
 %%
 \usepackage{dendentitle}
-\title{歌唱発声における発声難度の音高・音色依存性に関する分析的検討}
-\author{B4 小林海斗}
-\date{2020/2/3}
+\title{歌唱発声における発声難度の音高・音色依存性に関する\\分析的検討}
+\author{電気電子工学科　03-180480　　小林海斗}
+\date{2020/2/7}
 
 %%
 %% main
 %%
 \begin{document}
-\makedendentitle{卒論}{峯松・齋藤研究室}
+\maketitle
 
 \tableofcontents
 
@@ -66,17 +66,19 @@
 
 \section{本論文の構成}
 本論文は全6章で構成される。
-第2章では、$F_0$動的変動成分に関する先行研究について述べる。
+第2章では、日本語単語における発声しやすさの自動評価に関する先行研究と、$F_0$動的変動成分に関する先行研究について述べる。
 第3章では、本研究で用いる$F_0$抽出の理論的背景、母音と構音の関係について述べる。
 第4章では、収録実験の詳細と得られたデータに対する客観的評価について述べる。
 第5章では、得られたデータに対して行った分析、およびその分析から導かれる発声難度への影響要素について述べる。
 そして第6章では、結論と今後の課題について述べる。
 
+
+
 \chapter{関連研究}
 
 \section{歌声特有の$F_0$動的変動成分}
 齋藤らは様々な歌声データの$F_0$変化パターンを分析し、以下に示す4種類の$F_0$動的変動成分が歌唱スタイルや歌唱者に関係なく
-存在することを明らかにした。\cite{singbyspeaking}
+存在することを明らかにした\cite{singbyspeaking}。
 \begin{description}
     \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分
     \item[ヴィブラート(Vibrato)]同一音高区間で観測される4〜8Hzの準周期的な変動成分
@@ -96,6 +98,78 @@
 \end{figure}
 
 このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
+
+\section{日本語単語における発声しやすさの自動評価}
+佐藤らは、日本語単語の発声難度を識別するための特徴量として調音データから抽出した特徴量と音声データから抽出した特徴量に一定の有効性があることを示した\cite{sato}。
+
+\subsection{調音運動及び音響特徴量に着目した特徴量の提案}
+発話の長さが異なる場合、フレーム分割による特徴量抽出は次元が合わずそのまま比較できないため、ここでは
+表\ref{table:expected}の特徴量を用いている。
+
+\begin{table}[h]
+    \small
+    \caption{発声しにくさの指標として機能することを期待する特徴量}
+    \label{table:expected}
+    \centering
+    \begin{tabular}{ccc}
+        \hline
+        タグ & 抽出する特徴量 & 次元数 \\
+        \hline \hline
+        articulation-based1 & 
+        \begin{tabular}{c}
+            12次元の調音データの各次元の時系列\\データに対する平均、ケプストラムの先\\頭12次元 
+        \end{tabular}  
+        & 156\\
+        articulation-based2 & 
+        \begin{tabular}{c}
+            \\2次元の調音データの各次元の時系列\\データ、時系列データの一次微分、二次\\微分それぞれに対する平均、分散、最大\\値、最小値、最小二乗法によって一次関\\数、二次関数に近似した際の係数および\\近似誤差
+        \end{tabular}  
+        & 396\\
+        cepstrum-based & 
+        \begin{tabular}{c}
+            \\音声データのケプストラム、$\Delta$特徴量、\\$\Delta\Delta$特徴量各13次元に対する平均、分\\散、最大値、最小値、最小二乗法によっ\\て一次関数、二次関数に近似した際の係\\数および近似誤差 
+        \end{tabular}  
+        & 429\\
+        mfcc-based & 
+        \begin{tabular}{c}
+            \\音声データのMFCC、$\Delta$特徴量、$\Delta\Delta$特\\徴量各13次元に対する平均、分散、最大\\値、最小値、最小二乗法によって一次関\\数、二次関数に近似した際の係数および\\近似誤差 
+        \end{tabular}      
+        & 429\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{作成データセットを用いた発声しやすさの識別}
+主観実験で得られたデータに対し、表\ref{table:expected}の特徴量を用いてサポートベクターマシンによって分類を行う。
+
+ラベルは2種類作成している。単語に付与された5段階スコアをもとに、スコア3.0を境界として発声難度を定める方式(with inntermediate: w/ mid)と、スコア2.0以下と4.0以上のみを用いる方式(without inntermediate: w/o mid)である。
+後者は中間スコアを含まず、主観評価がより安定しているもののみを識別に用いているといえる。
+
+これによる正解率、適合率、再現率、F値を示したものを表\ref{SVM}に示す。
+w/ midでは正解率は70\%前後で特徴量による大きな差はなかったが、w/o midでは全ての特徴量で正解率が上がり、音響特徴量に基づくcepstrum-based、mfc-basedが特に高い正解率を示した。
+
+\begin{table}[h]
+    \small
+    \caption{データセットを用いたSVMによる分類}
+    \label{table:SVM}
+    \centering
+\begin{tabular}{cccccc}
+    \hline
+    ラベリング & 特徴量 & 正解率 & 適合率 & 再現率 & F値\\
+    \hline \hline
+    w/ mid & articulation-based1 & 62.9\% & 38.7\% & 33.3\% & 35.8\%\\
+    & articulation-based2 & 75.0\% & 59.5\% & 61.1\% & 60.3\%\\
+    & cepstrum-based & 72.4\% & 56.3\% & 50.0\% & 52.9\%\\
+    & mfcc-based & 70.7\% & 52.8\% & 52.8\% & 52.8\%\\
+    \hline
+    w/o mid & articulation-based1 & 75.4\% & 47.1\% & 53.3\% & 50.0\%\\
+    & articulation-based2 & 75.4\% & 47.3\% & 60.0\% & 52.9\%\\
+    & cepstrum-based & 90.8\% & 75.5\% & 86.7\% & 81.3\%\\
+    & mfcc-based & 81.5\% & 57.9\% & 73.3\% & 64.7\%\\
+    \hline
+
+\end{tabular}
+\end{table}
 
 
 
@@ -132,59 +206,25 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
 
 \section{男声の声区}
-男声は、低い周波数で用いる地声の声区と女声の特徴を模倣する裏声の声区に区別される。\cite{science}
+男声は、低い周波数で用いる地声の声区と女声の特徴を模倣する裏声の声区に区別される\cite{science}。」
 この声区の変化時には声区転換が生じ、声質が大きく変わる。
-男性の地声と裏声の声区の重複する区間は200~350Hz（G3~F4）であるが、この声区の幅、境界は個人により大きく異なる。
+男性の地声と裏声の声区の重複する区間は200〜350Hz（G3〜F4）であるが、この声区の幅、境界は個人により大きく異なる。
 
 \section{母音の配置}
-図\ref{vowels}はIPAが定めた母音チャートである。
+図\ref{vowels}はIPAが定めた母音チャートである\footnote{https://www.internationalphoneticassociation.org/content/ipa-vowels}。
 縦軸は口の開き具合に対応し、上に行くほど狭くなる。
 横軸は舌の前後位置に対応し、左に行くほど前寄りである。
 
 \begin{figure}[htbp]
     \begin{center}
       \includegraphics[clip,width=7.0cm]{vowels.png}
-      \caption{IPA母音チャート\cite{vowels}}
+      \caption{IPA母音チャート}
       \label{vowels}
     \end{center}
 \end{figure}
 
-\section{音高表記}
-セントは音程を表す対数単位であり、12平均律においてオクターブを1200等分したものが1セントである。
-すなわち100セントで1半音のずれを表す。
-
-2つの音$x$と$y$の周波数が分かれば、その間のセント値は以下のように求められる。
-\begin{equation}
-    cent = 1200 \log_2 \frac{y}{x} 
-\end{equation}
 
 
-\section{ピッチ取得}
-ピッチの取得方法には複数の手法があるが、今回は音声分析合成システムであるWORLD\cite{world}におけるHarvest\cite{harvest}を用いて行った。
-ここではその概要について述べる。
-
-Harvestは$F_0$候補の推定部、推定された$F_0$候補から奇跡を生成する部からなる。
-図\ref{harvest}は$F_0$候補推定の流れである。
-
-\subsection{$F_0$候補の推定}
-まず初めに、中心周波数が$\omega_c$Hzの帯域通過フィルタを窓巻数とcos波の組み合わせから設計し基本波を抽出する。 
-\begin{equation}
-    h(t) = w(t) \cos(\omega_c t)
-\end{equation}
-\begin{equation}
-    w(t) = 0.355768+0.487396\cos \left(\frac{\pi}{2T_c}t\right) +0.144232\cos \left(\frac{\pi}{T_c}t\right) +0.4012604\cos \left(\frac{3\pi}{2T_c}t\right) 
-\end{equation}
-
-
-
-
-\begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=7.0cm]{harvest.png}
-      \caption{Harvestによる$F_0$候補推定の流れ\cite{harvest}}
-      \label{harvest}
-    \end{center}
-\end{figure}
 
 
 
@@ -192,10 +232,7 @@ Harvestは$F_0$候補の推定部、推定された$F_0$候補から奇跡を生
 
 
 \chapter{音高・音色における発声難度の調査}
-%本章では、まず初めに予備実験として音声を収録し、発声難度を主観評価する。
-%次に、そこで得られた結果からどの要素が発声しにくさとして現れているかを分析する。
-
-
+\section{概要}
 
 
 \section{実験条件}
@@ -237,20 +274,50 @@ Harvestは$F_0$候補の推定部、推定された$F_0$候補から奇跡を生
         \end{description}
 
     \item[使用機材]\mbox{}\\
-        ・マイク
-
-        ・カメラ: SONY FDR-AX45
-
-        ・オーディオIF
+        \begin{table}[h]
+            \caption{使用機材}
+            \label{table:items}
+            \centering
+            \begin{tabular}{clll}
+                \hline
+                使用機材 & 型番 \\
+                \hline \hline
+                コンデンサマイク & SONY C-48\\
+                ヘッドフォン & SONY MDR-CD480\\
+                レコーダ & KORG MR-1000\\
+                カメラ & SONY FDR-AX45\\
+                \hline
+            \end{tabular}
+        \end{table}
+        
 \end{description}
+
+
+
+
+
+
+
 
 \section{実験結果}
 以下に被験者1の実験結果を示す。他の被験者の結果は付録に載せた。
-$F_0$抽出にはWORLDのHarvestを用いた。$F_0$軌跡は1ms間隔である。
+$F_0$抽出には音声合成システムWORLD\cite{world}のHarvest\cite{harvest}を用いた。
+Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$F_0$候補から軌跡を生成する部からなる
+ピッチ抽出手法であり、他の手法と比較して耐雑音性が高いことで知られている。
+なお、$F_0$間隔は1msである。
 
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=7.0cm]{harvest.png}
+      \caption{Harvestによる$F_0$候補推定の流れ\cite{harvest}}
+      \label{harvest}
+    \end{center}
+\end{figure}
 
 \subsection{単音}
-
+被験者1の単音発声の$F_0$軌跡を図\ref{fig:1}に示す。
+歌い出しで音高が外れてしまっている場合でも、1秒以内に正しい音高に近い音高で発声を修正できている。
+また、歌い終わりは息が持たなかったために早めに切ってしまった音声が存在している。
 
 
 \begin{figure}[htbp]
@@ -262,6 +329,9 @@ $F_0$抽出にはWORLDのHarvestを用いた。$F_0$軌跡は1ms間隔である�
 \end{figure}
 
 \subsection{上昇}
+被験者1の上昇音形発声の$F_0$軌跡を図\ref{fig:u1}に示す。
+/i/について、上昇時に値が暴れているが、これは収録時に被験者が意図せず音を切り無音が発生したことに起因する。
+一部の音声においてはオーバーシュートおよびプリパレーションの様子が見られる。
 \begin{figure}[htbp]
     \begin{center}
       \includegraphics[clip,width=16.0cm]{F0_up_1.png}
@@ -271,6 +341,9 @@ $F_0$抽出にはWORLDのHarvestを用いた。$F_0$軌跡は1ms間隔である�
 \end{figure}
 
 \subsection{下降}
+被験者1の下降音形発声の$F_0$軌跡を図\ref{fig:d1}に示す。こちらは上昇と比べると意図しない無音は発声しにくいようである。
+またプリパレーションはほとんど見られず、オーバーシュートが全体的に発生している。
+
 \begin{figure}[htbp]
     \begin{center}
       \includegraphics[clip,width=16.0cm]{F0_down_1.png}
@@ -304,13 +377,6 @@ F0の時間変化
 
 \section{主観評価との比較}
 図\ref{difficulty}に、被験者による主観評価と平均音高のずれを示した。
-横軸は「発声しやすい」を0点、「どちらとも言えない」を1点、「発声しにくい」を2点としたときの2回の評価の和で、
-数値が大きいほど発声しにくいことを表している。
-
-どの被験者においてもF4における/i/、/e/の母音で発声しにくさが高く、音高は正確なピッチから25〜50centほど低くなっている。
-これは/i/、/u/の母音が狭め母音であるという構音上の声質が影響していると考えられる。
-また、被験者1、2はC4においても発声しにくさを感じており、被験者3、4と比較して声区変換が早期に発生していると考えられる。
-
 
 \begin{figure}[htbp]
     \begin{center}
@@ -320,6 +386,24 @@ F0の時間変化
     \end{center}
 \end{figure}
 
+横軸は「発声しやすい」を0点、「どちらとも言えない」を1点、「発声しにくい」を2点としたときの2回の評価の和で、
+数値が大きいほど発声しにくいことを表している。
+縦軸は基準音高からのずれをセントで表している。
+セントは音程を表す対数単位であり、12平均律においてオクターブを1200等分したものが1セントである。
+すなわち100セントで1半音のずれを表す。
+
+2つの音$x$と$y$の周波数が分かれば、その間のセント値は以下のように求められる。
+\begin{equation}
+    cent = 1200 \log_2 \frac{y}{x} 
+\end{equation}
+
+どの被験者においてもF4における/i/、/e/の母音で発声しにくいと評価しており、音高は正確なピッチから最大で50centほど低くなっている。
+これは/i/、/u/の母音が狭め母音であるという構音上の性質が影響していると考えられる。
+また、被験者1、2はC4においても発声しにくさを感じており、被験者3、4と比較して声区変換が早期に発生していると考えられる。
+
+
+
+
 \section{単音発声の安定性}
 単音発声は8秒間同じ音高を発声し続けるため、後半に音程の安定性が崩れることがあった。
 この安定性を具体的に見るために、時間軸をいくつかの区間に分けて分析を行った。
@@ -327,42 +411,45 @@ F0の時間変化
 それぞれの区間において平均と標準偏差を求めた。
 この結果を図\ref{long_mean_1}、\ref{long_mean_2}、\ref{long_mean_3}、\ref{long_mean_4}に示した。
 
+
 \begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=12.0cm]{long_mean_1.png}
-      \caption{被験者1の平均値変化}
-      \label{long_mean_1}
-    \end{center}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{long_mean_1.png}
+          \end{center}
+     \caption{被験者1の平均値変化}
+     \label{long_mean_1}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{long_mean_2.png}
+          \end{center}
+     \caption{被験者2の平均値変化}
+     \label{long_mean_2}
+    \end{minipage}
 \end{figure}
 
 \begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=12.0cm]{long_mean_2.png}
-      \caption{被験者2の平均値変化}
-      \label{long_mean_2}
-    \end{center}
-\end{figure}
-
-\begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=12.0cm]{long_mean_3.png}
-      \caption{被験者3の平均値変化}
-      \label{long_mean_3}
-    \end{center}
-\end{figure}
-
-\begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=12.0cm]{long_mean_4.png}
-      \caption{被験者4の平均値変化}
-      \label{long_mean_4}
-    \end{center}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{long_mean_3.png}
+          \end{center}
+     \caption{被験者3の平均値変化}
+     \label{long_mean_3}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{long_mean_4.png}
+          \end{center}
+     \caption{被験者4の平均値変化}
+     \label{long_mean_4}
+    \end{minipage}
 \end{figure}
 
 これらを見ると、音高が上がるほど最終的な音のぶれが小さくなっていることがわかる。
-このことから、音高を合わせ続けることについては低音の方が難しいと考えられる。
+このことから、音高を合わせ続けることについては発声時の感覚に反し低音の方が難しいと考えられる。
 また、F3において/i/、/u/の音高の平均が他の母音に比べて全体的に高くなっており、
-歌唱者の知覚する音高が他の母音と比べて相対的に高くなっていることを示唆している。
+低音域では/i/、/u/発声時における歌唱者の知覚する音高が他の母音と比べて相対的に高くなっていることを示唆している。
 これは/i/、/u/の$F_1$が発声している音高と近いことが原因の一つと考えられる。
 
 被験者1は音高の目標点が基準より全体的に低めであり、被験者の想定する正しい音高と実際の音高が異なる可能性がある。
@@ -375,7 +462,7 @@ F0の時間変化
 \section{$F_0$の周波数変調}
 続いて、発声の不安定性がヴィブラートのように$F_0$に現れている可能性から$F_0$動的変動成分に着目する。
 歌い出しと歌い終わりを除く6秒間の$F_0$軌跡を波形としてフーリエ変換を行い、どのような成分が含まれるかを確かめた。
-詳細な条件は表\ref{table:F0Moduration}に示した。
+詳細な条件は表\ref{table:F0Moduration}の通りである。
 
 
 \begin{table}[h]
@@ -384,8 +471,6 @@ F0の時間変化
     \centering
     \begin{tabular}{clll}
         \hline
-        条件 & 詳細\\
-        \hline \hline
         データ長 & 6001点\\
         フレームレート & 1000Hz\\
         窓長 & 500点\\
@@ -403,7 +488,7 @@ F0の時間変化
 
 被験者3、4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
 この原因の一つとして、/i/、/u/の$F_1$が発声している音高と近いことから、
-声帯音源の発声機構と声道の間に強い干渉が生じ、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる。\cite{source-filterCoupling}
+声帯音源の発声機構と声道の間に強い干渉が生じ\cite{source-filterCoupling}、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる。\cite{tsuburagi}
 
 \begin{figure}[htbp]
     \begin{center}
@@ -482,7 +567,7 @@ F0の時間変化
 
 
 \appendix
-\chapter{載せきれなかったデータたちの墓場}
+\chapter{他被験者の収録データ}
 
 \begin{figure}[htbp]
     \begin{center}
