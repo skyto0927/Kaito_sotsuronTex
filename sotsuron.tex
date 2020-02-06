@@ -1,4 +1,4 @@
-\documentclass[10.5ptj,a4j,dvipdfmx,uplatex, oneside, openany, report, draft]{jsbook}%ここのdraft消すと画像が出る
+\documentclass[10.5ptj,a4j,dvipdfmx,uplatex, oneside, openany, report]{jsbook}%ここのdraft消すと画像が出る
 
 % レイアウト
 \usepackage[driver=dvipdfm,hmargin=19.05truemm,vmargin=25.40truemm]{geometry}
@@ -57,10 +57,15 @@
 \section{研究の背景}
 自然な歌唱は
 
+従来の研究としては
+宋らの研究では調音運動に基づいて発声難度を求め、それを歌詞自動生成の指標として用いている\cite{so}。
+また、佐藤らの研究では調音運動に加えて音響特徴量に着目し、日本語単語の発声しやすさを評価している\cite{sato}。
+しかしこれらは調音的な側面が強く、歌声の要素の一つである音高による影響が考慮されていない。
+
 
 \section{研究の目的}
 本研究では、音声合成や歌詞作成などへの応用のために発声難度の音高・音色依存性を分析することを目的とする。
-使用する音声データは被験者による母音に限定した歌声を収録したものを用いる。そして、データに対して分析を行い、
+使用する音声データは被験者による母音に限定した歌声を収録したものを用いる。得られるデータに対して分析を行い、
 音高・音色依存性を探る。
 また、収録プロトコルを確立することで今後の発声難度分析の一助となることも本研究の目的である。
 
@@ -76,28 +81,6 @@
 
 \chapter{関連研究}
 
-\section{歌声特有の$F_0$動的変動成分}
-齋藤らは様々な歌声データの$F_0$変化パターンを分析し、以下に示す4種類の$F_0$動的変動成分が歌唱スタイルや歌唱者に関係なく
-存在することを明らかにした\cite{singbyspeaking}。
-\begin{description}
-    \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分
-    \item[ヴィブラート(Vibrato)]同一音高区間で観測される4〜8Hzの準周期的な変動成分
-    \item[プレパレーション(Preparationn)]音高の変化直前に変化とは逆方向に触れる瞬時的な変動成分
-    \item[微細振動(Fine fluctuation)] 発声区間全体に観測される15〜20Hz程度の不規則で細かい変動成分
-\end{description}
-
-図\ref{f0_moving}はアマチュア歌手による日本童謡「七つの子」の$F_0$変化パターンおよび$F_0$動的変動成分である。
-これから上記の微細振動を除く変動成分が生じていることが読み取れる。
-
-\begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=12.0cm]{f0_moving.png}
-      \caption{アマチュア歌唱者の歌声における$F0$動的変動成分の例\cite{singbyspeaking}}
-      \label{f0_moving}
-    \end{center}
-\end{figure}
-
-このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
 
 \section{日本語単語における発声しやすさの自動評価}
 佐藤らは、日本語単語の発声難度を識別するための特徴量として調音データから抽出した特徴量と音声データから抽出した特徴量に一定の有効性があることを示した\cite{sato}。
@@ -145,7 +128,7 @@
 ラベルは2種類作成している。単語に付与された5段階スコアをもとに、スコア3.0を境界として発声難度を定める方式(with inntermediate: w/ mid)と、スコア2.0以下と4.0以上のみを用いる方式(without inntermediate: w/o mid)である。
 後者は中間スコアを含まず、主観評価がより安定しているもののみを識別に用いているといえる。
 
-これによる正解率、適合率、再現率、F値を示したものを表\ref{SVM}に示す。
+これによる正解率、適合率、再現率、F値を示したものを表\ref{table:SVM}に示す。
 w/ midでは正解率は70\%前後で特徴量による大きな差はなかったが、w/o midでは全ての特徴量で正解率が上がり、音響特徴量に基づくcepstrum-based、mfc-basedが特に高い正解率を示した。
 
 \begin{table}[h]
@@ -171,6 +154,29 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
 \end{tabular}
 \end{table}
 
+\section{歌声特有の$F_0$動的変動成分}
+齋藤らは様々な歌声データの$F_0$変化パターンを分析し、以下に示す4種類の$F_0$動的変動成分が歌唱スタイルや歌唱者に関係なく
+存在することを明らかにした\cite{singbyspeaking}。
+\begin{description}
+    \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分
+    \item[ヴィブラート(Vibrato)]同一音高区間で観測される4〜8Hzの準周期的な変動成分
+    \item[プレパレーション(Preparationn)]音高の変化直前に変化とは逆方向に触れる瞬時的な変動成分
+    \item[微細振動(Fine fluctuation)] 発声区間全体に観測される15〜20Hz程度の不規則で細かい変動成分
+\end{description}
+
+図\ref{f0_moving}はアマチュア歌手による日本童謡「七つの子」の$F_0$変化パターンおよび$F_0$動的変動成分である。
+これから上記の微細振動を除く変動成分が生じていることが読み取れる。
+
+\begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[clip,width=12.0cm]{f0_moving.png}
+      \caption{アマチュア歌唱者の歌声における$F0$動的変動成分の例\cite{singbyspeaking}}
+      \label{f0_moving}
+    \end{center}
+\end{figure}
+
+このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
+
 
 
 %---------------------------%
@@ -183,46 +189,40 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
 
 調音器官の運動は、フォルマント周波数全てに影響を与える。
 第1フォルマントは顎の開きに敏感で、開き具合が大きくなるほど第1フォルマント周波数は上昇する。
-第2フォルマントは特に舌の形状に大きく影響を受ける。
-声道前方を狭めるときに第2フォルマント周波数はもっとも高くなる。
+第2フォルマントは特に舌の形状に大きく影響を受け、声道前方を狭めるときに第2フォルマント周波数はもっとも高くなる。
 逆に、軟口蓋や咽頭部を狭める時には低くなる。
-第3フォルマントは舌尖の位置、正確には前歯のすぐ後ろの空間に影響を受ける。
-空間が大きいほど第3フォルマント周波数は低くなる。
+第3フォルマントは舌尖の位置、正確には前歯のすぐ後ろの空間に影響を受け、空間が大きいほど第3フォルマント周波数は低くなる。
 
 フォルマント周波数のうち特に$F_1$、$F_2$は母音を特徴付ける重要なパラメータであり、これらの分布によって母音を分類することができる\cite{japanese_vowels}。
-図\ref{fig:jp_formant}は日本語5母音における$F_1$、$F_2$を示したものである。
+図\ref{jp_formant}は日本語5母音における$F_1$、$F_2$を示したものである。
 
 \begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=7.0cm]{5母音.png}
-      \caption{日本語5母音の$F_1$、$F_2$\cite{japanese_vowels}}
-      \label{jp_formant}
-    \end{center}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{5母音.png}
+            \caption{日本語5母音の$F_1$、$F_2$\cite{japanese_vowels}}
+            \label{jp_formant}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[clip,width=7.0cm]{vowels.png}
+            \caption{IPA母音チャート}
+            \label{vowels}
+        \end{center}
+    \end{minipage}
 \end{figure}
+
 ここでAMは成人男性、AFは成人女性、ADは青年、Cは子供である。一般に、平均的な声が高いほど
 フォルマント周波数も高い傾向にある。
 成人男性を例に挙げると、$F_1$は250〜1000 \si{Hz}、$F_2$は600〜2500 \si{Hz}、
 $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
 
-\section{男声の声区}
-男声は、低い周波数で用いる地声の声区と女声の特徴を模倣する裏声の声区に区別される\cite{science}。」
-この声区の変化時には声区転換が生じ、声質が大きく変わる。
-男性の地声と裏声の声区の重複する区間は200〜350Hz（G3〜F4）であるが、この声区の幅、境界は個人により大きく異なる。
-
-\section{母音の配置}
-図\ref{vowels}はIPAが定めた母音チャートである\footnote{https://www.internationalphoneticassociation.org/content/ipa-vowels}。
+また、図\ref{vowels}はIPAが定めた母音チャートである\footnote{https://www.internationalphoneticassociation.org/content/ipa-vowels}。
 縦軸は口の開き具合に対応し、上に行くほど狭くなる。
 横軸は舌の前後位置に対応し、左に行くほど前寄りである。
-
-\begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=7.0cm]{vowels.png}
-      \caption{IPA母音チャート}
-      \label{vowels}
-    \end{center}
-\end{figure}
-
+これは適切に反転と回転を行うことで図\ref{jp_formant}と重なることが知られている。
 
 
 
@@ -232,8 +232,12 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
 
 \chapter{音高・音色における発声難度の調査}
-\section{概要}
 
+歌唱能力は個人差に依るところが大きいが、全体としておおまかな発声難度の傾向はあると考えられる。
+一般には/i/の母音では高音域が出しにくいとされている。
+女性は男性と比較してフォルマント周波数が高く、音域も異なることから同時に傾向を掴むのは難しいと考え、ここでは男性に限定して調査を行う。
+男性の地声と裏声の声区の重複する区間は200〜350Hz（G3〜F4）であるが、この声区の幅、境界は個人により大きく異なる。
+そのため、使用音域は男性の平均的な地声の範囲に収まるように設定した。
 
 \section{実験条件}
 \begin{description}
@@ -257,23 +261,25 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
                 
                 ・収録と同時に、正面から発声時の口部の様子を録画する。
             \item[単音]\mbox{}\\
-                8拍のカウントの後、/a/の発声でF3の音高を16拍伸ばした後8拍休憩する。
+                8拍（4秒）のカウントの後、/a/の発声でF3の音高を16拍（8秒）伸ばした後8拍（4秒）休憩する。
                 これを音高をA3、C4、F4と変えて行う。
                 発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
                 発声が5通り、音高が4通りで合計20回収録する。
             \item[上昇]\mbox{}\\
-                4拍のカウントの後、/a/の発声でF3の音高を2拍伸ばし、その後/a/の発声でA3の音高を2拍伸ばす。
+                4拍（2秒）のカウントの後、/a/の発声でF3の音高を2拍（1秒）伸ばし、その後/a/の発声でA3の音高を2拍（1秒）
+                伸ばす。
                 これを、後半の音高A3をC4、F4と変えて行う。
                 前後の発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
                 発声が25通り、音高変化が3通りで合計75回収録する。
             \item[下降]\mbox{}\\
-                4拍のカウントの後、/a/の発声でA3の音高を2拍伸ばし、その後/a/の発声でF3の音高を2拍伸ばす。
+                4拍（2秒）のカウントの後、/a/の発声でA3の音高を2拍（1秒）伸ばし、その後/a/の発声でF3の音高を2拍（1秒）伸ばす。
                 これを、前半の音高A3をC4、F4と変えて行う。
                 前後の発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
                 発声が25通り、音高変化が3通りで合計75回収録する。
         \end{description}
 
     \item[使用機材]\mbox{}\\
+        使用機材を表\ref{table:items}に示す。
         \begin{table}[h]
             \caption{使用機材}
             \label{table:items}
@@ -300,7 +306,7 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
 
 \section{実験結果}
-以下に被験者1の実験結果を示す。他の被験者の結果は付録に載せた。
+以下に被験者1の実験結果を示す。他の被験者の結果は付録に載せている。
 $F_0$抽出には音声合成システムWORLD\cite{world}のHarvest\cite{harvest}を用いた。
 Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$F_0$候補から軌跡を生成する部からなる
 ピッチ抽出手法であり、他の手法と比較して耐雑音性が高いことで知られている。
@@ -315,65 +321,87 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 \end{figure}
 
 \subsection{単音}
-被験者1の単音発声の$F_0$軌跡を図\ref{fig:1}に示す。
+被験者1の単音発声の$F_0$軌跡を図\ref{la}、\ref{li}、\ref{lu}、\ref{le}、\ref{lo}に示す。
 歌い出しで音高が外れてしまっている場合でも、1秒以内に正しい音高に近い音高で発声を修正できている。
 また、歌い終わりは息が持たなかったために早めに切ってしまった音声が存在している。
 
 
 \begin{figure}[htbp]
-    \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_long_1.png}
-      \caption{被験者1の単音発声}
-      \label{fig:1}
-    \end{center}
+    \begin{minipage}{0.33\hsize}
+        \begin{center}
+            \includegraphics[width=5cm]{long/long_1_a.png}
+            \caption{被験者1の/a/単音発声}
+            \label{la}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.33\hsize}
+        \begin{center}
+            \includegraphics[width=5cm]{long/long_1_i.png}
+            \caption{被験者1の/i/単音発声}
+            \label{li}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.33\hsize}
+        \begin{center}
+            \includegraphics[width=5cm]{long/long_1_u.png} 
+            \caption{被験者1の/u/単音発声}
+            \label{lu}
+        \end{center}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{minipage}{0.33\hsize}
+        \begin{center}
+            \includegraphics[width=5cm]{long/long_1_e.png}
+            \caption{被験者1の/e/単音発声}
+            \label{le}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.33\hsize}
+        \begin{center}
+            \includegraphics[width=5cm]{long/long_1_o.png}
+            \caption{被験者1の/o/単音発声}
+            \label{lo}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.33\hsize} 
+    \end{minipage}
+    
 \end{figure}
 
 \subsection{上昇}
-被験者1の上昇音形発声の$F_0$軌跡を図\ref{fig:u1}に示す。
-/i/について、上昇時に値が暴れているが、これは収録時に被験者が意図せず音を切り無音が発生したことに起因する。
+被験者1の上昇音形発声の$F_0$軌跡を図\ref{u1}に示す。左側が上昇前の母音、上側が上昇後の母音を表している。
+上昇前が/i/のグラフにおいて上昇時に値が暴れているが、これは収録時に被験者が意図せず音を切り無音が発生したことに起因する。
 一部の音声においてはオーバーシュートおよびプリパレーションの様子が見られる。
+
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_up_1.png}
-      \caption{被験者1の上昇発声}
-      \label{fig:u1}
+      \includegraphics[clip,width=16.0cm]{up1.png}
+      \caption{被験者1の上昇音形発声}
+      \label{u1}
     \end{center}
 \end{figure}
 
 \subsection{下降}
-被験者1の下降音形発声の$F_0$軌跡を図\ref{fig:d1}に示す。こちらは上昇と比べると意図しない無音は発声しにくいようである。
+被験者1の下降音形発声の$F_0$軌跡を図\ref{d1}に示す。こちらは上昇と比べると意図しない無音は発声しにくくなっている。
 またプリパレーションはほとんど見られず、オーバーシュートが全体的に発生している。
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_down_1.png}
-      \caption{被験者1の下降発声}
-      \label{fig:d1}
+      \includegraphics[clip,width=16.0cm]{down1.png}
+      \caption{被験者1の下降音形発声}
+      \label{d1}
     \end{center}
 \end{figure}
-
-
-単音
-F0平均、分散
-F0平均の時間変化
-発声しにくさとF0平均
-
-上下
-F0の時間変化
-フォルマントの移動
-
-
-被験者ごとの比較
-1…全体的に低めだが揺らぎは小さい
-2…音程を合わせに行こうとして揺らぐ
-3…精度が良いが、高音ほどピッチが上がる
-4…音によってばらつきあり
-
 
 
 %---------------------------%
 
 \chapter{分析結果}
+前項で得られたグラフだけでは、発声難度との関連性が見出せない。
+そこで、前項のデータのうち特に単音発声の収録データとその発声難度の主観評価に着目して細かく分析を行い、
+発声難度との関連性を検討する。
 
 \section{主観評価との比較}
 図\ref{difficulty}に、被験者による主観評価と平均音高のずれを示した。
@@ -486,8 +514,9 @@ F0の時間変化
 
 
 
-被験者3、4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
-この原因の一つとして、/i/、/u/の$F_1$が発声している音高と近いことから、
+被験者3と4、特に被験者4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
+この原因の一つとして、音源-フィルタ相互作用の影響が考えられる。
+/i/、/u/の$F_1$は300Hz前後であり発声している音高F3(174.6Hz)と比較的近いことから、
 声帯音源の発声機構と声道の間に強い干渉が生じ\cite{source-filterCoupling}、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる。\cite{tsuburagi}
 
 \begin{figure}[htbp]
