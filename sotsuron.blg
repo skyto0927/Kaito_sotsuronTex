@@ -1,0 +1,55 @@
+This is upBibTeX, Version 0.99d-j0.33-u1.24 (utf8.uptex) (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: sotsuron.aux
+The style file: junsrt.bst
+Database file #1: references.bib
+Warning--empty journal in so
+Warning--there's a number but no volume in so
+Warning--empty journal in sato
+Warning--there's a number but no volume in sato
+Warning--empty booktitle in singbyspeaking
+Warning--empty journal in japanese_vowels
+Warning--empty booktitle in harvest
+You've used 13 entries,
+            2270 wiz_defined-function locations,
+            627 strings with 6663 characters,
+and the built_in function-call counts, 4238 in all, are:
+= -- 317
+> -- 115
+< -- 22
++ -- 47
+- -- 34
+* -- 229
+:= -- 510
+add.period$ -- 40
+call.type$ -- 13
+change.case$ -- 12
+chr.to.int$ -- 0
+cite$ -- 20
+duplicate$ -- 277
+empty$ -- 410
+format.name$ -- 68
+if$ -- 1050
+int.to.chr$ -- 0
+int.to.str$ -- 13
+missing$ -- 14
+newline$ -- 69
+num.names$ -- 13
+pop$ -- 93
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 216
+stack$ -- 0
+substring$ -- 212
+swap$ -- 88
+text.length$ -- 22
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 7
+while$ -- 27
+width$ -- 15
+write$ -- 140
+is.kanji.str$ -- 144
+(There were 7 warnings)

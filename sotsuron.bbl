@@ -1,0 +1,84 @@
+\begin{thebibliography}{10}
+
+\bibitem{orpheus}
+覚深山, 啓中妻, 裕一郎米林, 慎司酒向, 卓也西本,
+  順貴小野, 茂樹嵯峨山.
+\newblock Orpheus : 歌詞の韻律に基づいた自動作曲システム.
+\newblock 情報処理学会研究報告. [音楽情報科学], Vol.~76, pp.
+  179--184, aug 2008.
+
+\bibitem{so}
+健智宋, 大輔齋藤, 信明峯松.
+\newblock
+  調音運動に基づく発声難易度の指標化と歌詞の歌いやすさ評価への応用の検討.
+\newblock No.~40, jun 2018.
+
+\bibitem{sato}
+禎哉佐藤, 大輔齋藤, 信明峯松.
+\newblock
+  調音運動及び音響特徴量に着目した日本語単語における発声しやすさの自動評価の検討.
+\newblock No.~27, jun 2019.
+
+\bibitem{singbyspeaking}
+齋藤毅, 後藤真孝, 鵜木祐史, 赤木正人.
+\newblock Singbyspeaking:
+  歌声知覚に重要な音響特徴を制御して話声を歌声に変換するシステム.
+\newblock 情報処理学会研究報告, 02 2008.
+
+\bibitem{F0Cahara}
+Takeshi Saitou, Masashi Unoki, and Masato Akagi.
+\newblock Development of an f0 control model based on f0 dynamic
+  characteristics for singing-voice synthesis.
+\newblock {\em Speech Communication}, Vol.~46, No.~3, pp. 405 -- 417, 2005.
+\newblock Quantitative Prosody Modelling for Natural Speech Description and
+  Generation.
+
+\bibitem{vibPercept}
+Howard~B. Rothman and A.~Antonio Arroyo.
+\newblock Acoustic variability in vibrato and its perceptual significance.
+\newblock {\em Journal of Voice}, Vol.~1, No.~2, pp. 123 -- 141, 1987.
+
+\bibitem{naturalVib}
+毅齋藤, 祐史鵜木, 正人赤木.
+\newblock
+  自然性の高い歌声合成のためのヴィブラート変調周波数の制御法の検討.
+\newblock 電子情報通信学会技術研究報告, Vol. 105, No. 291, pp.
+  13--18, sep 2005.
+
+\bibitem{japanese_vowels}
+Tatsuya Hirahara and Reiko Akahane-Yamada.
+\newblock Acoustic characteristics of japanese vowels.
+\newblock 04 2004.
+
+\bibitem{science}
+Johan Sundberg.
+\newblock 歌声の科学.
+\newblock 東京電機大学出版局, 2007.
+
+\bibitem{world}
+Masanori MORISE, Fumiya YOKOMORI, and Kenji OZAWA.
+\newblock World: A vocoder-based high-quality speech synthesis system for
+  real-time applications.
+\newblock {\em IEICE Transactions on Information and Systems}, Vol. E99.D,
+  No.~7, pp. 1877--1884, 2016.
+
+\bibitem{harvest}
+Masanori Morise.
+\newblock Harvest: A high-performance fundamental frequency estimator from
+  speech signals.
+\newblock INTERSPEECH 2017, 08 2017.
+
+\bibitem{source-filterCoupling}
+Ingo~R. Titze.
+\newblock Nonlinear source–filter coupling in phonation: Theory.
+\newblock {\em The Journal of the Acoustical Society of America}, Vol. 123,
+  No.~5, pp. 2733--2749, 2008.
+
+\bibitem{tsuburagi}
+時彦鏑木.
+\newblock
+  発声における音源-フィルタ相互作用の周波数依存性について.
+\newblock 電子情報通信学会技術研究報告. SP, 音声, Vol. 110,
+  No.~81, pp. 67--72, jun 2010.
+
+\end{thebibliography}

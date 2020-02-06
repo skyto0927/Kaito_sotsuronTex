@@ -55,12 +55,14 @@
 \chapter{序論}
 
 \section{研究の背景}
-自然な歌唱は
+音楽制作は近年では非常に身近なものとなっている。コンピュータを用いれば、楽譜が読めなかったり楽器が演奏できなかったりする人でも
+手軽に作曲することが可能であり、ハードルはどんどん下がっている。
+自動曲生成、自動歌詞生成はすでに様々な検討がされており、自動作曲システムOrpheus\cite{orpheus}が有名な例として挙げられるが、
+これによって生成された楽曲は必ずしも人間にとって歌いやすいものとは限らない。
 
-従来の研究としては
 宋らの研究では調音運動に基づいて発声難度を求め、それを歌詞自動生成の指標として用いている\cite{so}。
 また、佐藤らの研究では調音運動に加えて音響特徴量に着目し、日本語単語の発声しやすさを評価している\cite{sato}。
-しかしこれらは調音的な側面が強く、歌声の要素の一つである音高による影響が考慮されていない。
+しかしこれらは調音的な側面が強く、歌声の要素の一つである音高・音色による影響が考慮されていない。
 
 
 \section{研究の目的}
@@ -85,11 +87,35 @@
 \section{日本語単語における発声しやすさの自動評価}
 佐藤らは、日本語単語の発声難度を識別するための特徴量として調音データから抽出した特徴量と音声データから抽出した特徴量に一定の有効性があることを示した\cite{sato}。
 
+\subsection{発声しやすさに着目した単語データセットの作成}
+被験者に単語を提示し、実際に発声させてその発声難度を5段階で評価させる。
+早口で繰り返し発声することで発声難度が顕著に現れると仮定し、被験者3人に対して実験を行った。
+対象単語は、文字音声単語親密度が5.0以上の7モーラ単語633個である。
+
+この結果、一方がどちらとも言えないと回答した単語を除いた単語における回答の一致率は表\ref{table:answer}のように高く、
+このデータは多少の個人差はあるが有効なラベル付きデータとみなせるといえる。
+
+\begin{table}[htbp]
+    \small
+    \caption{一方がどちらともいえないと回答した単語を除く単語における回答の一致率}
+    \label{table:answer}
+    \centering
+    \begin{tabular}{cc}
+        \hline
+        被験者1 vs 被験者2 & 74.3\% \\
+        \hline 
+        被験者2 vs 被験者3 & 79.3\% \\
+        \hline
+        被験者3 vs 被験者1 & 82.5\% \\
+        \hline
+    \end{tabular}
+\end{table}
+
 \subsection{調音運動及び音響特徴量に着目した特徴量の提案}
 発話の長さが異なる場合、フレーム分割による特徴量抽出は次元が合わずそのまま比較できないため、ここでは
 表\ref{table:expected}の特徴量を用いている。
 
-\begin{table}[h]
+\begin{table}[t]
     \small
     \caption{発声しにくさの指標として機能することを期待する特徴量}
     \label{table:expected}
@@ -131,7 +157,7 @@
 これによる正解率、適合率、再現率、F値を示したものを表\ref{table:SVM}に示す。
 w/ midでは正解率は70\%前後で特徴量による大きな差はなかったが、w/o midでは全ての特徴量で正解率が上がり、音響特徴量に基づくcepstrum-based、mfc-basedが特に高い正解率を示した。
 
-\begin{table}[h]
+\begin{table}[t]
     \small
     \caption{データセットを用いたSVMによる分類}
     \label{table:SVM}
@@ -158,14 +184,18 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
 齋藤らは様々な歌声データの$F_0$変化パターンを分析し、以下に示す4種類の$F_0$動的変動成分が歌唱スタイルや歌唱者に関係なく
 存在することを明らかにした\cite{singbyspeaking}。
 \begin{description}
-    \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分
-    \item[ヴィブラート(Vibrato)]同一音高区間で観測される4〜8Hzの準周期的な変動成分
-    \item[プレパレーション(Preparationn)]音高の変化直前に変化とは逆方向に触れる瞬時的な変動成分
-    \item[微細振動(Fine fluctuation)] 発声区間全体に観測される15〜20Hz程度の不規則で細かい変動成分
+    \item[オーバーシュート(Overshoot)]滑らかな音高変化、およびその直後に目的音高を超える瞬時的な変動成分。歌唱技量によらず同様の変動がみられる\cite{F0Cahara}。
+    \item[ヴィブラート(Vibrato)]同一音高区間で観測される4〜8Hzの準周期的な変動成分。西洋オペラ歌唱においては音色を豊かにする要素とされており\cite{vibPercept}、特性は歌唱技術によって明確に異なる\cite{naturalVib}。
+    \item[プレパレーション(Preparationn)]音高の変化直前に変化とは逆方向に触れる瞬時的な変動成分。こちらもオーバーシュート同様歌唱技術によらず変動する。
+    \item[微細振動(Fine fluctuation)] 発声区間全体に観測される15〜20Hz程度の不規則で細かい変動成分。
 \end{description}
 
-図\ref{f0_moving}はアマチュア歌手による日本童謡「七つの子」の$F_0$変化パターンおよび$F_0$動的変動成分である。
-これから上記の微細振動を除く変動成分が生じていることが読み取れる。
+
+図\ref{f0_moving}はアマチュア歌手による日本童謡「七つの子」の$F_0$変化パターンおよび$F_0$動的変動成分であり、
+上記の微細振動を除く変動成分が生じていることがわかる。
+
+このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
+
 
 \begin{figure}[htbp]
     \begin{center}
@@ -175,7 +205,6 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
     \end{center}
 \end{figure}
 
-このような$F0$動的変動成分は歌声を知覚する上で重要な役割を担っており、自然な歌声合成の要素の一つとして応用が可能であると考えられる。
 
 
 
@@ -196,7 +225,7 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
 フォルマント周波数のうち特に$F_1$、$F_2$は母音を特徴付ける重要なパラメータであり、これらの分布によって母音を分類することができる\cite{japanese_vowels}。
 図\ref{jp_formant}は日本語5母音における$F_1$、$F_2$を示したものである。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[clip,width=7.0cm]{5母音.png}
@@ -208,7 +237,7 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
         \begin{center}
             \includegraphics[clip,width=7.0cm]{vowels.png}
             \caption{IPA母音チャート}
-            \label{vowels}
+            \label{fig:vowels}
         \end{center}
     \end{minipage}
 \end{figure}
@@ -219,7 +248,7 @@ w/ midでは正解率は70\%前後で特徴量による大きな差はなかっ�
 $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 
 
-また、図\ref{vowels}はIPAが定めた母音チャートである\footnote{https://www.internationalphoneticassociation.org/content/ipa-vowels}。
+また、図\ref{fig:vowels}はIPAが定めた母音チャートである\footnote{https://www.internationalphoneticassociation.org/content/ipa-vowels}。
 縦軸は口の開き具合に対応し、上に行くほど狭くなる。
 横軸は舌の前後位置に対応し、左に行くほど前寄りである。
 これは適切に反転と回転を行うことで図\ref{jp_formant}と重なることが知られている。
@@ -260,18 +289,18 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
                 ・発声後に、発声難度を主観で評価する。この評価は「発声しにくい」「どちらとも言えない」「発声しやすい」の3段階で行う。
                 
                 ・収録と同時に、正面から発声時の口部の様子を録画する。
-            \item[単音]\mbox{}\\
+            \item[単音発声]\mbox{}\\
                 8拍（4秒）のカウントの後、/a/の発声でF3の音高を16拍（8秒）伸ばした後8拍（4秒）休憩する。
                 これを音高をA3、C4、F4と変えて行う。
                 発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
                 発声が5通り、音高が4通りで合計20回収録する。
-            \item[上昇]\mbox{}\\
+            \item[上昇音形発声]\mbox{}\\
                 4拍（2秒）のカウントの後、/a/の発声でF3の音高を2拍（1秒）伸ばし、その後/a/の発声でA3の音高を2拍（1秒）
                 伸ばす。
                 これを、後半の音高A3をC4、F4と変えて行う。
                 前後の発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
                 発声が25通り、音高変化が3通りで合計75回収録する。
-            \item[下降]\mbox{}\\
+            \item[下降音形発声]\mbox{}\\
                 4拍（2秒）のカウントの後、/a/の発声でA3の音高を2拍（1秒）伸ばし、その後/a/の発声でF3の音高を2拍（1秒）伸ばす。
                 これを、前半の音高A3をC4、F4と変えて行う。
                 前後の発声を/i/、/u/、/e/、/o/に変えた場合においても同様に行う。
@@ -308,15 +337,15 @@ $F_3$は1700〜3500 \si{Hz}である\cite{science}。
 \section{実験結果}
 以下に被験者1の実験結果を示す。他の被験者の結果は付録に載せている。
 $F_0$抽出には音声合成システムWORLD\cite{world}のHarvest\cite{harvest}を用いた。
-Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$F_0$候補から軌跡を生成する部からなる
+Harvestは図\ref{fig:harvest}のように$F_0$候補の推定部と推定された$F_0$候補から軌跡を生成する部からなる
 ピッチ抽出手法であり、他の手法と比較して耐雑音性が高いことで知られている。
 なお、$F_0$間隔は1msである。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=7.0cm]{harvest.png}
       \caption{Harvestによる$F_0$候補推定の流れ\cite{harvest}}
-      \label{harvest}
+      \label{fig:harvest}
     \end{center}
 \end{figure}
 
@@ -326,7 +355,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 また、歌い終わりは息が持たなかったために早めに切ってしまった音声が存在している。
 
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{minipage}{0.33\hsize}
         \begin{center}
             \includegraphics[width=5cm]{long/long_1_a.png}
@@ -350,7 +379,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
     \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{minipage}{0.33\hsize}
         \begin{center}
             \includegraphics[width=5cm]{long/long_1_e.png}
@@ -375,7 +404,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 上昇前が/i/のグラフにおいて上昇時に値が暴れているが、これは収録時に被験者が意図せず音を切り無音が発生したことに起因する。
 一部の音声においてはオーバーシュートおよびプリパレーションの様子が見られる。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=16.0cm]{up1.png}
       \caption{被験者1の上昇音形発声}
@@ -387,7 +416,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 被験者1の下降音形発声の$F_0$軌跡を図\ref{d1}に示す。こちらは上昇と比べると意図しない無音は発声しにくくなっている。
 またプリパレーションはほとんど見られず、オーバーシュートが全体的に発生している。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=16.0cm]{down1.png}
       \caption{被験者1の下降音形発声}
@@ -404,22 +433,22 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 発声難度との関連性を検討する。
 
 \section{主観評価との比較}
-図\ref{difficulty}に、被験者による主観評価と平均音高のずれを示した。
+図\ref{fig:difficulty}に、被験者による主観評価と平均音高のずれを示した。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=12.0cm]{ease.png}
       \caption{主観評価と$F_0$平均値の比較}
-      \label{difficulty}
+      \label{fig:difficulty}
     \end{center}
 \end{figure}
 
 横軸は「発声しやすい」を0点、「どちらとも言えない」を1点、「発声しにくい」を2点としたときの2回の評価の和で、
 数値が大きいほど発声しにくいことを表している。
 縦軸は基準音高からのずれをセントで表している。
+
 セントは音程を表す対数単位であり、12平均律においてオクターブを1200等分したものが1セントである。
 すなわち100セントで1半音のずれを表す。
-
 2つの音$x$と$y$の周波数が分かれば、その間のセント値は以下のように求められる。
 \begin{equation}
     cent = 1200 \log_2 \frac{y}{x} 
@@ -440,7 +469,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 この結果を図\ref{long_mean_1}、\ref{long_mean_2}、\ref{long_mean_3}、\ref{long_mean_4}に示した。
 
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[clip,width=7.0cm]{long_mean_1.png}
@@ -457,7 +486,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
     \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[clip,width=7.0cm]{long_mean_3.png}
@@ -474,16 +503,18 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
     \end{minipage}
 \end{figure}
 
-これらを見ると、音高が上がるほど最終的な音のぶれが小さくなっていることがわかる。
+これらより、音高が上がるほど後半の標準偏差の値が小さくなっていることがわかる。
 このことから、音高を合わせ続けることについては発声時の感覚に反し低音の方が難しいと考えられる。
+
 また、F3において/i/、/u/の音高の平均が他の母音に比べて全体的に高くなっており、
 低音域では/i/、/u/発声時における歌唱者の知覚する音高が他の母音と比べて相対的に高くなっていることを示唆している。
 これは/i/、/u/の$F_1$が発声している音高と近いことが原因の一つと考えられる。
 
-被験者1は音高の目標点が基準より全体的に低めであり、被験者の想定する正しい音高と実際の音高が異なる可能性がある。
-被験者2は高音でも標準偏差が大きいままであり、地声の音域外の音高を無理に発声しようとした結果不安定になったと考えられる。
+また、被験者ごとに異なる傾向が現れている。
+被験者1は音高の収束点が基準音高より全体的に低めであり、被験者の想定する正しい音高と実際の音高が異なる可能性がある。
+被験者2は高音でも標準偏差が大きいままであり、正しい音高は把握しているが歌唱技量あるいは音域の問題でピッチが不安定になっているといえる。
 また被験者3、4は被験者1、2と比べると標準偏差が全体的に小さい。
-このように、被験者ごとに個人の特性が強く出ていると考えられる。
+その中でも被験者3は最終的な基準音高との差が30セント以内に収まっており、歌唱技量が高いか音域が広いと考えられる。
 
 
 
@@ -508,45 +539,46 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 \end{table}
 
 
-なお、窓長で切り出したデータに対して、平均が0になるように値を移動してからハミング窓をかけた。得られたモジュレーションの全体平均をとったものが
+なお、窓長で切り出したデータに対して、平均が0になるように値を平行移動してからハミング窓をかけた。得られたモジュレーションの全体平均をとったものが
 図\ref{long_spectrogram_1}、\ref{long_spectrogram_2}、
 \ref{long_spectrogram_3}、\ref{long_spectrogram_4}である。
 
+50Hz付近では音高が高いほどグラフの傾きが急峻になっていることが読み取れるほか50〜100Hz付近で微細振動が見られるが、
+これらが発声しにくさに影響しているかどうかはわからなかった。
 
-
-被験者3と4、特に被験者4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
+また、被験者3と4、特に被験者4に強く見られる現象として、/i/、/u/の狭め母音に対して80Hz周辺でピークが生じている。
 この原因の一つとして、音源-フィルタ相互作用の影響が考えられる。
 /i/、/u/の$F_1$は300Hz前後であり発声している音高F3(174.6Hz)と比較的近いことから、
-声帯音源の発声機構と声道の間に強い干渉が生じ\cite{source-filterCoupling}、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる。\cite{tsuburagi}
+声帯音源の発声機構と声道の間に強い干渉が生じ\cite{source-filterCoupling}、音源-フィルタ相互作用によって基本周波数に変化が生じたと考えられる\cite{tsuburagi}。
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=12.0cm]{long_spectrogram_1.png}
-      \caption{被験者1のモジュレーションの全体平均}
+      \caption{被験者1における$F_0$波形の平均パワースペクトル}
       \label{long_spectrogram_1}
     \end{center}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[tbhp]
     \begin{center}
       \includegraphics[clip,width=12.0cm]{long_spectrogram_2.png}
-      \caption{被験者2のモジュレーションの全体平均}
+      \caption{被験者2における$F_0$波形の平均パワースペクトル}
       \label{long_spectrogram_2}
     \end{center}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=12.0cm]{long_spectrogram_3.png}
-      \caption{被験者3のモジュレーションの全体平均}
+      \caption{被験者3における$F_0$波形の平均パワースペクトル}
       \label{long_spectrogram_3}
     \end{center}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[thbp]
     \begin{center}
       \includegraphics[clip,width=12.0cm]{long_spectrogram_4.png}
-      \caption{被験者4のモジュレーションの全体平均}
+      \caption{被験者4における$F_0$波形の平均パワースペクトル}
       \label{long_spectrogram_4}
     \end{center}
 \end{figure}
@@ -556,10 +588,13 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 %---------------------------%
 
 \chapter{結論}
-\section{総括}
+\section{研究の成果}
 本研究では、音高・音色ごとの発声難度の分析による様々な応用を目指し、これを実現するために
 被験者らの歌唱音声を収録して主に$F_0$に関する分析を行った。
+その結果、/i/、/u/といった狭め母音が歌声の安定性に影響することが確認できた。
 
+また、音高・音色分析における収録方法を提案した。同様、あるいは似た方法で被験者を増やして収録することで、
+より詳細な分析が可能であると考えている。
 \section{今後の課題}
 
 音高・音色ごとの発声しにくさを分析するために4人の被験者からデータを収録したが、
@@ -600,7 +635,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_long_2.png}
+      \includegraphics[clip,width=12.0cm]{F0_long_2.png}
       \caption{被験者2の単音発声}
       \label{fig:2}
     \end{center}
@@ -608,7 +643,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_long_3.png}
+      \includegraphics[clip,width=12.0cm]{F0_long_3.png}
       \caption{被験者3の単音発声}
       \label{fig:3}
     \end{center}
@@ -617,7 +652,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_long_4.png}
+      \includegraphics[clip,width=12.0cm]{F0_long_4.png}
       \caption{被験者4の単音発声}
       \label{fig:4}
     \end{center}
@@ -629,7 +664,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_up_2.png}
+      \includegraphics[clip,width=12.0cm]{up2.png}
       \caption{被験者2の上昇発声}
       \label{fig:u2}
     \end{center}
@@ -637,14 +672,14 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_up_3.png}
+      \includegraphics[clip,width=12.0cm]{up3.png}
       \caption{被験者3の上昇発声}
       \label{fig:u3}
     \end{center}
 
 \end{figure}\begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_up_4.png}
+      \includegraphics[clip,width=12.0cm]{up4.png}
       \caption{被験者4の上昇発声}
       \label{fig:u4}
     \end{center}
@@ -656,7 +691,7 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_down_2.png}
+      \includegraphics[clip,width=12.0cm]{down2.png}
       \caption{被験者2の下降発声}
       \label{fig:d2}
     \end{center}
@@ -664,14 +699,14 @@ Harvestは図\ref{harvest}のように$F_0$候補の推定部と推定された$
 
 \begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_down_3.png}
+      \includegraphics[clip,width=12.0cm]{down3.png}
       \caption{被験者3の下降発声}
       \label{fig:d3}
     \end{center}
 
 \end{figure}\begin{figure}[htbp]
     \begin{center}
-      \includegraphics[clip,width=16.0cm]{F0_down_4.png}
+      \includegraphics[clip,width=12.0cm]{down4.png}
       \caption{被験者4の下降発声}
       \label{fig:d4}
     \end{center}
